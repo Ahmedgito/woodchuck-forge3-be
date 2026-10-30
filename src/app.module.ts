@@ -130,8 +130,11 @@ import { HealthModule } from './health/health.module';
       isGlobal: true,
       imports: [ConfigModule],
       useFactory: (cfg: ConfigService) => ({
-        accountSid: cfg.get('TWILIO_ACCOUNT_SID'),
-        authToken: cfg.get('TWILIO_AUTH_TOKEN'),
+        // Placeholders let the API boot without Twilio credentials; sending SMS still needs real ones.
+        accountSid:
+          cfg.get('TWILIO_ACCOUNT_SID') ||
+          'AC00000000000000000000000000000000',
+        authToken: cfg.get('TWILIO_AUTH_TOKEN') || 'placeholder-auth-token',
       }),
       inject: [ConfigService],
     }),
@@ -139,14 +142,14 @@ import { HealthModule } from './health/health.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         redis: {
-          host: configService.get('REDIS_HOST', { infer: true }),
-          port: Number(configService.get('REDIS_PORT', { infer: true })),
+          host: configService.get('REDIS_HOST', { infer: true }) || 'localhost',
+          port: Number(configService.get('REDIS_PORT', { infer: true })) || 6379,
           password: configService.get('REDIS_PASSWORD', { infer: true }),
           maxRetriesPerRequest: 100,
           // tls: {
           //   rejectUnauthorized: false,
           // },
-          db: Number(configService.get('REDIS_DATABASE', { infer: true })),
+          db: Number(configService.get('REDIS_DATABASE', { infer: true })) || 0,
         },
       }),
       inject: [ConfigService],
