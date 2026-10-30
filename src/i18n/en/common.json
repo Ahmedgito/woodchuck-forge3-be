@@ -1,0 +1,17 @@
+{
+  "confirmEmail": "New Access: WoodChuck Portal",
+  "resetPassword": "Password Reset Requested for WoodChuck Portal",
+  "pollutedDumpsterNotification": "Pollution Detected at {jobSiteName} – {wasteStreamName}",
+  "fillLevelThresholdExceedNotification": "Fill Level Threshold Exceeded at {jobSiteName} – {wasteStreamName}",
+  "archiveMonthlyReports": "Your Archived Monthly Report(s) are Ready",
+  "reportSubscriptionEmail": "Auto-exporting of Woodchuck waste reports, activated",
+  "reportUnsubscriptionEmail": "Auto-exporting of Woodchuck waste reports, deactivated",
+  "monthlyReportEmail": "Your {frequency} waste report for {jobSiteName}",
+  "archiveDashboardReports": "Your Archived Dashboard Report(s) are Ready",
+  "monthlyReportAdminEmail": "Your {frequency} job site waste reports",
+  "monthlyReportDashboardAdmin": "Your {frequency} Woodchuck Admin dashboard waste reports",
+  "monthlyReportDashboardUser": "Your {frequency} dashboard waste reports",
+  "reportOverviewEmailSubject": "Weekly Report Overview",
+  "downloadReportsText": "You can download your report(s) using the link(s) below:",
+  "downloadCumulativeReportsText": "You can download your cumulative monthly report(s) using the link(s) below:"
+}

@@ -1,0 +1,6 @@
+{
+  "text1": "Hello {name},",
+  "text2": "Thanks for setting up a {frequency} auto-exporting of your Woodchuck filtered waste reports for {jobSiteName}.",
+  "text3": "Your {frequency} reports will be automatically generated and emailed to you.",
+  "text4": "You can also de-activate this automatic emailing of {frequency} reports by clicking here:"
+}

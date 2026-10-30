@@ -1,0 +1,7 @@
+{
+  "text1": "Hello {name},",
+  "text2": "Here is your automatic {frequency} waste report covering ",
+  "text3": ". This is an aggregated dashboard report covering all clients of WoodChuck.ai, and all their job sites.",
+  "text4": "Your aggregated dashboard report is attached here.",
+  "text5": "You can also de-activate this automatic emailing of {frequency} reports by clicking here:"
+}

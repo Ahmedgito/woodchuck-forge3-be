@@ -1,0 +1,144 @@
+NODE_ENV=development
+APP_PORT=3000
+APP_NAME="NestJS API"
+API_PREFIX=api
+APP_FALLBACK_LANGUAGE=en
+APP_HEADER_LANGUAGE=x-custom-lang
+FRONTEND_DOMAIN=http://localhost:3000
+BACKEND_DOMAIN=http://localhost:3000
+
+DATABASE_TYPE=postgres
+DATABASE_HOST=postgres
+DATABASE_PORT=5432
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=secret
+DATABASE_NAME=api
+DATABASE_SYNCHRONIZE=false
+DATABASE_MAX_CONNECTIONS=100
+DATABASE_SSL_ENABLED=false
+DATABASE_REJECT_UNAUTHORIZED=false
+DATABASE_CA=
+DATABASE_KEY=
+DATABASE_CERT=
+DATABASE_URL=
+
+# Support "local", "s3", "s3-presigned"
+FILE_DRIVER=local
+ACCESS_KEY_ID=
+SECRET_ACCESS_KEY=
+AWS_S3_REGION=
+AWS_DEFAULT_S3_BUCKET=
+
+MAIL_HOST=maildev
+MAIL_PORT=1025
+MAIL_USER=
+MAIL_PASSWORD=
+MAIL_IGNORE_TLS=true
+MAIL_SECURE=false
+MAIL_REQUIRE_TLS=false
+MAIL_DEFAULT_EMAIL=noreply@example.com
+MAIL_DEFAULT_NAME=Api
+MAIL_CLIENT_PORT=1080
+
+# Internal admin emails to BCC on every report email (comma-separated, no spaces required).
+# Recipients are silently BCC'd so client recipients cannot see them.
+# Leave empty to disable. Example:
+# INTERNAL_REPORT_BCC_EMAILS=admin1@woodchuck.ai,admin2@woodchuck.ai
+INTERNAL_REPORT_BCC_EMAILS=
+
+AUTH_JWT_SECRET=secret
+AUTH_JWT_TOKEN_EXPIRES_IN=15m
+AUTH_REFRESH_SECRET=secret_for_refresh
+AUTH_REFRESH_TOKEN_EXPIRES_IN=3650d
+AUTH_FORGOT_SECRET=secret_for_forgot
+AUTH_FORGOT_TOKEN_EXPIRES_IN=30m
+AUTH_CONFIRM_EMAIL_SECRET=secret_for_confirm_email
+AUTH_CONFIRM_EMAIL_TOKEN_EXPIRES_IN=1d
+
+FACEBOOK_APP_ID=
+FACEBOOK_APP_SECRET=
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+APPLE_APP_AUDIENCE=[]
+
+TWITTER_CONSUMER_KEY=
+TWITTER_CONSUMER_SECRET=
+
+WORKER_HOST=redis://redis:6379/1
+
+# AI Vision provider: woodchuck-ml | mock | openai | aws-rekognition
+AI_VISION_PROVIDER=woodchuck-ml
+# WoodChuck ML predict endpoint (QA default)
+AI_MODEL_URL=https://woodchuck-ml-dev.folio3.site/predict_wood_type
+
+# API key configuration
+# 32 bytes base64 (not hex). Example: `openssl rand -base64 32`
+API_KEY_ENCRYPTION_KEY=
+# Random secret for HMAC pepper (any strong string)
+API_KEY_PEPPER=
+
+# ---------- Logging & Monitoring ----------
+# Pino root level. Defaults: info in production, debug otherwise.
+LOG_LEVEL=info
+# Optional: also write JSON logs to a file (recommended on EC2 so the
+# CloudWatch Agent can tail it). Leave empty to log only to stdout.
+LOG_FILE_PATH=
+# Requests slower than this (ms) are logged at warn.
+LOG_SLOW_REQUEST_MS=1500
+
+# Daily cleanup of report_log rows (see ReportLoggerCleanupService).
+REPORT_LOG_RETENTION_MONTHS=5
+REPORT_LOG_CLEANUP_DISABLED=false
+
+# ==========================================================================
+# Deploy control — read by deploy/deploy.sh.
+# See docs/deployment-pipeline-plan.md. Set these per server.
+# All four environments (dev, qa, staging, prod) run the app as a single
+# standalone container, so DEPLOY_MODE=standalone everywhere. (compose mode
+# exists for a future all-in-one local stack but is not used today.)
+# ==========================================================================
+# NOTE: no inline comments on value lines below — docker --env-file treats
+# everything after '=' as the value, so keep comments on their own lines.
+#
+# Which environment this server IS (dev | qa | staging | prod).
+# deploy-<env>.sh asserts the wrapper matches this, so deploy-prod.sh cannot
+# run on the staging box, etc.
+DEPLOY_ENV=dev
+# Branch this server deploys from (dev | qa | uat-replica | PROD).
+DEPLOY_BRANCH=dev
+# standalone | compose
+DEPLOY_MODE=standalone
+# Container + image names used by the standalone deploy/rollback.
+APP_CONTAINER=backend-api-cont
+APP_IMAGE=backend-api-image
+# APP_PORT is defined at the top of this file (3000) and reused here.
+# Docker invocation. On boxes where the deploy user is NOT in the docker group
+# (the current dev/qa Jenkins servers use sudo), set: DOCKER_CMD="sudo docker".
+# Leave unset/blank on boxes where plain `docker` works (docker-group user).
+DOCKER_CMD=
+# Attach containers to a docker network so a container-name DB host (e.g.
+# `postgres`) resolves. Leave blank to match a plain `docker run` (AWS/RDS).
+# If your current `docker inspect backend-api-cont` shows a named network, set it.
+DOCKER_NETWORK=
+# Unauthenticated readiness endpoint polled before cutover (no /api prefix).
+HEALTH_PATH=/health/ready
+# Seconds to wait for a container to answer HTTP 200 before failing / rolling
+# back. Must cover migrate + seed + app boot on the warm container (a first run
+# can be slow). The probe returns as soon as it sees 200, so this is a ceiling.
+HEALTH_TIMEOUT=300
+# Migrations/seed on container boot. deploy.sh forces these false on the final
+# cutover container (the warm container already applied them). Leave true here.
+RUN_MIGRATIONS=true
+RUN_SEED=true
+# Local dependency services to auto-start before deploying (dev/qa, where
+# Postgres/Redis run as compose containers on this host). deploy.sh runs
+# `docker compose up -d <these>` so the box self-heals if they were stopped or
+# pruned. Leave EMPTY on AWS (staging/prod) where the DB/Redis are RDS/ElastiCache.
+#   dev/qa:        COMPOSE_DEPS=postgres redis
+#   staging/prod:  COMPOSE_DEPS=
+COMPOSE_DEPS=
+# Compose file used for COMPOSE_DEPS (and compose mode).
+COMPOSE_FILE=docker-compose.yaml
+COMPOSE_SERVICE=api

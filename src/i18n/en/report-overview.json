@@ -1,0 +1,12 @@
+{
+  "greeting": "Hello Super Admins,",
+  "intro": "Here is the weekly overview of active reports requested by Woodchuck users.",
+  "monthlyReportLabel": "Monthly Report:",
+  "weeklyReportLabel": "Weekly Report:",
+  "wcAdminLabel": "WC ADMIN",
+  "clientAdminLabel": "CLIENT ADMIN",
+  "noSubscriptionText": "No one has subscribed.",
+  "dashboardLabel": "Dashboard",
+  "jobSitesLabel": "Job Sites"
+}
+

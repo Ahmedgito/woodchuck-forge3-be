@@ -1,0 +1,6 @@
+{
+  "text1": "Hello {name},",
+  "text2": "This email is being sent to confirm that you recently de-activated receiving {frequency} Woodchuck filtered waste reports for {jobSiteName}.",
+  "text3": "You will no longer be receiving emailed {frequency} reports.",
+  "text4": "You can re-activate this automatic emailing of {frequency} reports by clicking here:"
+}

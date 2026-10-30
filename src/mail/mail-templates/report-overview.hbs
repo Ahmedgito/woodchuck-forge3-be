@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body style="margin:0;font-family:arial">
+    <table style="border:0;width:100%" cellpadding="0" cellspacing="0">
+       {{> header}}
+        <tr>
+            <td style="padding:10px;color:#333;font-size:14px;line-height:1.5;font-family:Arial,sans-serif;">
+                <p style="margin:0 0 8px 0;font-size:14px;color:#333;text-align:left;">{{greeting}}</p>
+                <p style="margin:0 0 15px 0;font-size:14px;color:#333;text-align:left;">{{intro}}</p>
+                
+                <table style="max-width:800px;margin:0 auto;width:100%;">
+                    <tr>
+                        <td>
+                            <!-- Dashboard Section -->
+                            <table style="width:100%;margin-bottom:20px;border-collapse:collapse;">
+                    <tr>
+                        <td style="padding:0;">
+                            <div style="background-color:#6B5691;padding:8px 12px;border-radius:6px 6px 0 0;">
+                                <h2 style="margin:0;font-size:15px;font-weight:bold;color:#fff;text-transform:uppercase;letter-spacing:0.5px;">{{dashboardLabel}}</h2>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:12px;background-color:#ffffff;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 6px 6px;">
+                            <!-- Monthly Report -->
+                            <table style="width:100%;margin-bottom:12px;">
+                                <tr>
+                                    <td style="padding:0 0 6px 0;border-bottom:1px solid #e8e8e8;">
+                                        <h3 style="margin:0;font-size:13px;font-weight:bold;color:#474258;">{{monthlyReportLabel}}</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0 0 0;">
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td style="width:40%;padding:4px 0;vertical-align:top;font-size:12px;color:#474258;white-space:nowrap;text-align:right;">{{wcAdminLabel}}:</td>
+                                                <td style="width:60%;padding:4px 0 4px 20px;vertical-align:top;">
+                                                    {{#if reportOverview.dashboard.monthly.wcAdmins.length}}
+                                                        {{#each reportOverview.dashboard.monthly.wcAdmins}}
+                                                            <div style="margin:0;font-size:12px;color:#333;">{{#if displayName}}{{name}} - {{displayName}}{{else}}{{name}}{{/if}}</div>
+                                                        {{/each}}
+                                                    {{else}}
+                                                        <div style="margin:0;font-size:12px;color:#999;font-style:italic;">{{noSubscriptionText}}</div>
+                                                    {{/if}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:40%;padding:4px 0;vertical-align:top;font-size:12px;color:#474258;white-space:nowrap;text-align:right;">{{clientAdminLabel}}:</td>
+                                                <td style="width:60%;padding:4px 0 4px 20px;vertical-align:top;">
+                                                    {{#if reportOverview.dashboard.monthly.clientAdmins.length}}
+                                                        {{#each reportOverview.dashboard.monthly.clientAdmins}}
+                                                            <div style="margin:0;font-size:12px;color:#333;">{{#if displayName}}{{name}} - {{displayName}}{{else}}{{name}}{{/if}}</div>
+                                                        {{/each}}
+                                                    {{else}}
+                                                        <div style="margin:0;font-size:12px;color:#999;font-style:italic;">{{noSubscriptionText}}</div>
+                                                    {{/if}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Weekly Report -->
+                            <table style="width:100%;">
+                                <tr>
+                                    <td style="padding:0 0 6px 0;border-bottom:1px solid #e8e8e8;">
+                                        <h3 style="margin:0;font-size:13px;font-weight:bold;color:#474258;">{{weeklyReportLabel}}</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:6px 0 0 0;">
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td style="width:40%;padding:4px 0;vertical-align:top;font-size:12px;color:#474258;white-space:nowrap;text-align:right;">{{wcAdminLabel}}:</td>
+                                                <td style="width:60%;padding:4px 0 4px 20px;vertical-align:top;">
+                                                    {{#if reportOverview.dashboard.weekly.wcAdmins.length}}
+                                                        {{#each reportOverview.dashboard.weekly.wcAdmins}}
+                                                            <div style="margin:0;font-size:12px;color:#333;">{{#if displayName}}{{name}} - {{displayName}}{{else}}{{name}}{{/if}}</div>
+                                                        {{/each}}
+                                                    {{else}}
+                                                        <div style="margin:0;font-size:12px;color:#999;font-style:italic;">{{noSubscriptionText}}</div>
+                                                    {{/if}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width:40%;padding:4px 0;vertical-align:top;font-size:12px;color:#474258;white-space:nowrap;text-align:right;">{{clientAdminLabel}}:</td>
+                                                <td style="width:60%;padding:4px 0 4px 20px;vertical-align:top;">
+                                                    {{#if reportOverview.dashboard.weekly.clientAdmins.length}}
+                                                        {{#each reportOverview.dashboard.weekly.clientAdmins}}
+                                                            <div style="margin:0;font-size:12px;color:#333;">{{#if displayName}}{{name}} - {{displayName}}{{else}}{{name}}{{/if}}</div>
+                                                        {{/each}}
+                                                    {{else}}
+                                                        <div style="margin:0;font-size:12px;color:#999;font-style:italic;">{{noSubscriptionText}}</div>
+                                                    {{/if}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                
+                <!-- Job Sites Section -->
+                <table style="width:100%;border-collapse:collapse;">
+                    <tr>
+                        <td style="padding:0;">
+                            <div style="background-color:#67588D;padding:8px 12px;border-radius:6px 6px 0 0;">
+                                <h2 style="margin:0;font-size:15px;font-weight:bold;color:#fff;text-transform:uppercase;letter-spacing:0.5px;">{{jobSitesLabel}}</h2>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+                {{#if reportOverview.jobSites.length}}
+                {{#each reportOverview.jobSites}}
+                <!-- Client Group -->
+                <table style="width:100%;margin-bottom:15px;border-collapse:collapse;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                    <tr>
+                        <td style="padding:0;">
+                            <div style="background-color:#B5ABC8;padding:8px 12px;">
+                                <h3 style="margin:0;font-size:14px;font-weight:bold;color:#000000;">Client - {{roleName}} - {{clientName}}</h3>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:12px;background-color:#ffffff;border:1px solid #e0e0e0;border-top:none;border-radius:0 0 6px 6px;">
+                            {{#if jobSites.length}}
+                                {{#each jobSites}}
+                                <!-- Job Site -->
+                                <table style="width:100%;margin-bottom:{{#unless @last}}12px{{else}}0{{/unless}};border-collapse:collapse;">
+                                    <tr>
+                                        <td style="padding:0 0 8px 0;">
+                                            <h4 style="margin:0;font-size:15px;font-weight:bold;color:#000000;">{{jobSiteName}}</h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:0 0 12px 0;">
+                                            <!-- Monthly Report -->
+                                            <table style="width:100%;margin-bottom:12px;">
+                                                <tr>
+                                                    <td style="padding:0 0 6px 0;border-bottom:1px solid #e8e8e8;">
+                                                        <h4 style="margin:0;font-size:13px;font-weight:bold;color:#474258;">{{../../monthlyReportLabel}}</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding:6px 0 0 0;">
+                                                        <table style="width:100%;">
+                                                            <tr>
+                                                                <td style="width:40%;padding:4px 0;vertical-align:top;font-size:12px;color:#474258;white-space:nowrap;text-align:right;">{{../../wcAdminLabel}}:</td>
+                                                                <td style="width:60%;padding:4px 0 4px 20px;vertical-align:top;">
+                                                                    {{#if monthly.wcAdmins.length}}
+                                                                        {{#each monthly.wcAdmins}}
+                                                                            <div style="margin:0;font-size:12px;color:#333;">{{#if displayName}}{{name}} - {{displayName}}{{else}}{{name}}{{/if}}</div>
+                                                                        {{/each}}
+                                                                    {{else}}
+                                                                        <div style="margin:0;font-size:12px;color:#999;font-style:italic;">{{../../noSubscriptionText}}</div>
+                                                                    {{/if}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:40%;padding:4px 0;vertical-align:top;font-size:12px;color:#474258;white-space:nowrap;text-align:right;">{{../../clientAdminLabel}}:</td>
+                                                                <td style="width:60%;padding:4px 0 4px 20px;vertical-align:top;">
+                                                                    {{#if monthly.clientAdmins.length}}
+                                                                        {{#each monthly.clientAdmins}}
+                                                                            <div style="margin:0;font-size:12px;color:#333;">{{#if displayName}}{{name}} - {{displayName}}{{else}}{{name}}{{/if}}</div>
+                                                                        {{/each}}
+                                                                    {{else}}
+                                                                        <div style="margin:0;font-size:12px;color:#999;font-style:italic;">{{../../noSubscriptionText}}</div>
+                                                                    {{/if}}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            
+                                            <!-- Weekly Report -->
+                                            <table style="width:100%;">
+                                                <tr>
+                                                    <td style="padding:0 0 6px 0;border-bottom:1px solid #e8e8e8;">
+                                                        <h4 style="margin:0;font-size:13px;font-weight:bold;color:#474258;">{{../../weeklyReportLabel}}</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding:6px 0 0 0;">
+                                                        <table style="width:100%;">
+                                                            <tr>
+                                                                <td style="width:40%;padding:4px 0;vertical-align:top;font-size:12px;color:#474258;white-space:nowrap;text-align:right;">{{../../wcAdminLabel}}:</td>
+                                                                <td style="width:60%;padding:4px 0 4px 20px;vertical-align:top;">
+                                                                    {{#if weekly.wcAdmins.length}}
+                                                                        {{#each weekly.wcAdmins}}
+                                                                            <div style="margin:0;font-size:12px;color:#333;">{{#if displayName}}{{name}} - {{displayName}}{{else}}{{name}}{{/if}}</div>
+                                                                        {{/each}}
+                                                                    {{else}}
+                                                                        <div style="margin:0;font-size:12px;color:#999;font-style:italic;">{{../../noSubscriptionText}}</div>
+                                                                    {{/if}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:40%;padding:4px 0;vertical-align:top;font-size:12px;color:#474258;white-space:nowrap;text-align:right;">{{../../clientAdminLabel}}:</td>
+                                                                <td style="width:60%;padding:4px 0 4px 20px;vertical-align:top;">
+                                                                    {{#if weekly.clientAdmins.length}}
+                                                                        {{#each weekly.clientAdmins}}
+                                                                            <div style="margin:0;font-size:12px;color:#333;">{{#if displayName}}{{name}} - {{displayName}}{{else}}{{name}}{{/if}}</div>
+                                                                        {{/each}}
+                                                                    {{else}}
+                                                                        <div style="margin:0;font-size:12px;color:#999;font-style:italic;">{{../../noSubscriptionText}}</div>
+                                                                    {{/if}}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    {{#unless @last}}
+                                    <tr>
+                                        <td style="padding:0;border-bottom:1px solid #e0e0e0;"></td>
+                                    </tr>
+                                    {{/unless}}
+                                </table>
+                                {{/each}}
+                            {{else}}
+                                <p style="margin:0;font-size:12px;color:#999;font-style:italic;text-align:center;">{{noSubscriptionText}}</p>
+                            {{/if}}
+                        </td>
+                    </tr>
+                </table>
+                {{/each}}
+                {{else}}
+                <table style="width:100%;margin-bottom:15px;border-collapse:collapse;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+                    <tr>
+                        <td style="padding:12px;background-color:#ffffff;border:1px solid #e0e0e0;border-radius:0 0 6px 6px;">
+                            <p style="margin:0;font-size:12px;color:#999;font-style:italic;text-align:center;">{{noSubscriptionText}}</p>
+                        </td>
+                    </tr>
+                </table>
+                {{/if}}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        {{> footer}}
+    </table>
+</body>
+</html>
+

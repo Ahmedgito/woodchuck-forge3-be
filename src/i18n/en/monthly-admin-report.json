@@ -1,0 +1,6 @@
+{
+  "text1": "Hello {name},",
+  "text2": "Here are your automatic {frequency} waste reports for the following clients and job sites, covering ",
+  "text3": ".  They are attached here.",
+  "text4": "You can also de-activate this automatic emailing of {frequency} reports by clicking here:"
+}

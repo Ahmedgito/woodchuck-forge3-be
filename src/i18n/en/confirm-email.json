@@ -1,0 +1,14 @@
+{
+  "text1": "Hello {userName},",
+  "text2": "You’ve been added as a user to the WoodChuck Monitoring Portal.",
+  "text3": "Welcome aboard!",
+  "text4": "Here is your account information:",
+  "text5": "Account Type: {userRole}",
+  "text6": "Email: {email}",
+  "text7": "Company: {company}",
+  "text8": "Please click on the link below to set your password:",
+  "text9": "Portal: {url}",
+  "text10": "This is a system-generated notification. No reply is needed.",
+  "text11": "WoodChuck.AI",
+  "text12": "Monitoring Team"
+}

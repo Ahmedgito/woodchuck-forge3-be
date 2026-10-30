@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body style="margin:0;font-family:arial">
+    <table style="border:0;width:100%" cellpadding="0" cellspacing="0">
+       {{> header}}
+        <tr>
+            <td style="padding:20px;color:#474258;font-size:16px;font-weight:100">
+                {{text1}}<br><br>
+                {{text2}}<strong style="font-weight:700">{{reportMonth}}</strong>{{text3}}<br><br>
+                {{#if downloadLinks.length}}
+                {{downloadLinksText}}<br>
+                {{#each downloadLinks}}
+                <a href="{{this.url}}">{{this.filename}}</a><br>
+                {{/each}}
+                <br>
+                {{/if}}
+                {{text4}}<br>
+                <a href="{{unsubscribeUrl}}">{{unsubscribeUrl}}</a>
+            </td>
+        </tr>
+        {{> footer}}
+    </table>
+</body>
+</html>

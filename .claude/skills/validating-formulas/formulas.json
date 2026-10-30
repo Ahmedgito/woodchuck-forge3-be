@@ -1,0 +1,293 @@
+{
+  "_comment": "Executable spec for WoodChuck's calculation formulas. Each entry anchors a documented formula to the code that implements it (regex checks) and, where possible, to a numeric example (evaluated by the validator). Companion doc: 'WoodChuck Calculation Reference' artifact. If you change a formula intentionally, update the matching entry here AND the reference doc in the same PR.",
+  "formulas": [
+    {
+      "id": "effective-weight",
+      "name": "Effective dumpster weight",
+      "spec": "weight = real_weight ?? estimated_weight",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/infrastructure/persistence/relational/entities/job-sites-waste-streams.entity.ts",
+          "pattern": "real_weight != null\\s*\\?\\s*Number\\(val\\.real_weight\\)\\s*:\\s*Number\\(val\\.estimated_weight\\)",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "estimated-weight",
+      "name": "Estimated dumpster weight",
+      "spec": "estimated_weight = tons_per_yard(type, vessel) * yard_size",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/infrastructure/persistence/relational/entities/job-sites-waste-streams.entity.ts",
+          "pattern": "tonsPerYard \\* yardSize",
+          "minCount": 1
+        }
+      ],
+      "examples": [
+        { "note": "Wood waste 0.1 t/yd in a 30-yd roll-off", "expr": "Number((0.1 * 30).toFixed(2))", "expected": 3 }
+      ]
+    },
+    {
+      "id": "bar-graph-diversion",
+      "name": "Job-site Waste Diversion % (bar graph)",
+      "spec": "tons_diverted / total_tons * 100; diverted excludes only Landfill",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/job-sites-waste-streams.service.ts",
+          "pattern": "\\(totals\\.totalDiverted / totals\\.totalTons\\) \\* 100",
+          "minCount": 1
+        },
+        {
+          "file": "src/job-sites-waste-streams/infrastructure/persistence/relational/entities/job-sites-waste-streams.entity.ts",
+          "pattern": "LocationsTypeEnum\\.Landfill\\s*\\)\\s*\\{\\s*return totalWeight",
+          "minCount": 1
+        }
+      ],
+      "examples": [
+        { "note": "QA tab: 20.5 t diverted of 41.5 t total", "expr": "Number(((20.5 / 41.5) * 100).toFixed(2))", "expected": 49.4 }
+      ]
+    },
+    {
+      "id": "wood-waste-collected",
+      "name": "Total Wood Waste (tree graph)",
+      "spec": "WOOD WASTE streams where delivery type != Recycling, plus power-plant-routed streams",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "async woodWaste\\(\\)[\\s\\S]{0,600}?location\\.type != :locationType[\\s\\S]{0,200}?Recycling",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "tree-branch-nodes",
+      "name": "Landfill / Remanufacturing / Industrial Product nodes",
+      "spec": "WOOD WASTE streams filtered by delivery location type",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "async landfill\\(\\)[\\s\\S]{0,600}?location\\.type = :locationType[\\s\\S]{0,200}?Landfill",
+          "minCount": 1
+        },
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "async remanufacturing\\(\\)[\\s\\S]{0,600}?ReManufacturing",
+          "minCount": 1
+        },
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "async industrialProduct\\(\\)[\\s\\S]{0,600}?Industrial Product",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "biomass-clean-energy",
+      "name": "Biomass for Clean Energy",
+      "spec": "WOOD WASTE where delivery = Wood Waste Process routed to a power plant (or plant referenced directly)",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "async biomassCleanEnergy\\([\\s\\S]{0,800}?Wood Waste Process[\\s\\S]{0,200}?LocationsToTypesEnum\\.powerplant",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "clean-energy-kwh",
+      "name": "Clean Energy",
+      "spec": "sum of (biomass stream tons * power_plant.kwhPerTon)  [unit is kWh, not BTU]",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "getJobsiteWastestreamDumpstersTotalWeight\\(\\) \\*\\s*selectedPowerplant\\.kwhPerTon",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "total-diverted",
+      "name": "Total Diverted (wood waste)",
+      "spec": "WOOD WASTE where delivery type NOT IN (Landfill, Recycling), power-plant routes included",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "async totalDiverted\\(\\)[\\s\\S]{0,900}?NOT IN \\(:\\.\\.\\.excludedTypes\\)[\\s\\S]{0,200}?excludedTypes: \\[\\s*LocationsTypeEnum\\['Landfill'\\],\\s*LocationsTypeEnum\\['Recycling'\\],?\\s*\\]",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "co2e-diverted",
+      "name": "Total CO2e Diverted",
+      "spec": "total_diverted * 1.65 (hard-coded factor; agreed value pending — see reference doc discrepancy #1)",
+      "checks": [
+        {
+          "file": "src/home/home.service.ts",
+          "pattern": "\\* 1\\.65",
+          "minCount": 2
+        },
+        {
+          "file": "src/job-sites-waste-streams/job-sites-waste-streams.service.ts",
+          "pattern": "\\* 1\\.65",
+          "minCount": 2
+        }
+      ],
+      "examples": [
+        { "note": "10 t diverted", "expr": "Number((10 * 1.65).toFixed(2))", "expected": 16.5 }
+      ]
+    },
+    {
+      "id": "chuck-result",
+      "name": "Chuck Result (wood-waste diversion %)",
+      "spec": "total_diverted / total_wood_waste * 100, 0 when wood waste is 0",
+      "checks": [
+        {
+          "file": "src/home/home.service.ts",
+          "pattern": "\\(totalDiverted / totalWoodWaste\\) \\* 100",
+          "minCount": 1
+        },
+        {
+          "file": "src/job-sites-waste-streams/job-sites-waste-streams.service.ts",
+          "pattern": "\\(totalDiverted / (totalWoodWaste|woodWaste)\\) \\* 100",
+          "minCount": 2
+        }
+      ],
+      "examples": [
+        { "note": "15 t diverted of 20 t collected", "expr": "Number(((15 / 20) * 100).toFixed(2))", "expected": 75 }
+      ]
+    },
+    {
+      "id": "rejected",
+      "name": "Rejected",
+      "spec": "total_wood_waste - total_diverted",
+      "checks": [
+        {
+          "file": "src/home/home.service.ts",
+          "pattern": "totalWoodWaste - totalDiverted",
+          "minCount": 1
+        },
+        {
+          "file": "src/job-sites-waste-streams/job-sites-waste-streams.service.ts",
+          "pattern": "totalWoodWaste - totalDiverted",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "transport-co2-factors",
+      "name": "Transport CO2 emission factors",
+      "spec": "roll_off 0.0026 t/ton-mile, semi 0.0016 t/load-mile, 28 t per semi load (emission_factors table overrides, these are fallbacks)",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "'roll_off_emission_factor', 0\\.0026",
+          "minCount": 2
+        },
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "'semi_emission_factor', 0\\.0016",
+          "minCount": 2
+        },
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "'average_semi_tons_per_load', 28",
+          "minCount": 2
+        },
+        {
+          "file": "src/job-sites-waste-streams/job-sites-waste-streams.service.ts",
+          "pattern": "'roll_off_emission_factor', 0\\.0026",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "transport-co2-legs",
+      "name": "Transport CO2 two-leg model",
+      "spec": "leg1 = sum(tons * delivery miles) * roll_off_factor; leg2 = sum(floor(tons/28) * offtake miles) * semi_factor",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "rollOffTonMiles \\* rollOffEmissionFactor",
+          "minCount": 2
+        },
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "Math\\.floor\\(tons / averageSemiTonsPerLoad\\)",
+          "minCount": 2
+        },
+        {
+          "file": "src/job-sites-waste-streams/job-sites-waste-streams.service.ts",
+          "pattern": "Math\\.floor\\(tons / averageSemiTonsPerLoad\\)",
+          "minCount": 1
+        }
+      ],
+      "examples": [
+        { "note": "Leg 1: 21 t hauled 30 mi", "expr": "21 * 30 * 0.0026", "expected": 1.638 },
+        { "note": "Leg 2: 30 t = 1 semi load, 45 mi offtake", "expr": "Math.floor(30 / 28) * 45 * 0.0016", "expected": 0.072 }
+      ]
+    },
+    {
+      "id": "net-co2-avoided",
+      "name": "Net CO2 Avoided",
+      "spec": "round(total_co2_diverted) - transport_co2 (report exports clamp at 0)",
+      "checks": [
+        {
+          "file": "src/home/home.service.ts",
+          "pattern": "Math\\.round\\(total_co2_diverted\\) - transportCo2",
+          "minCount": 1
+        },
+        {
+          "file": "src/job-sites-waste-streams/job-sites-waste-streams.service.ts",
+          "pattern": "Math\\.max\\(0, Math\\.round\\(total_co2_diverted\\) - transportCo2\\)",
+          "minCount": 1
+        }
+      ],
+      "examples": [
+        { "note": "16.5 t CO2e diverted, 1.71 t transport", "expr": "Math.round(16.5) - 1.71", "expected": 15.29 }
+      ]
+    },
+    {
+      "id": "cardboard-includes-recycled-wood",
+      "name": "Card Board bucket",
+      "spec": "CARD BOARD streams + WOOD WASTE streams delivered to Recycling",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "async cardBoard\\(\\)[\\s\\S]{0,700}?Recycling[\\s\\S]{0,400}?\\['WOOD WASTE', 'CARD BOARD'\\]",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "total-waste-diversion",
+      "name": "Total Waste Diversion % (all streams)",
+      "spec": "(all-stream tons where delivery != Landfill) / (all-stream tons) * 100",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "async getTotalWeightWithoutLandfill\\(\\)[\\s\\S]{0,600}?!= :type[\\s\\S]{0,120}?Landfill",
+          "minCount": 1
+        },
+        {
+          "file": "src/home/home.service.ts",
+          "pattern": "getTotalWeightWithoutLandfill",
+          "minCount": 1
+        }
+      ]
+    },
+    {
+      "id": "avg-client-goal",
+      "name": "Average Client Diversion Goal (dashboard)",
+      "spec": "sum of site goals / total site count (sites without a goal count as 0 — see reference doc discrepancy)",
+      "checks": [
+        {
+          "file": "src/job-sites-waste-streams/utils/job-sites-stats.ts",
+          "pattern": "totalSustainabilityGoal / jobSites\\.length",
+          "minCount": 1
+        }
+      ]
+    }
+  ]
+}
