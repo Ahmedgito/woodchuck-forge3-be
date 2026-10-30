@@ -5,6 +5,7 @@ import validateConfig from '../../utils/validate-config';
 
 class EnvironmentVariablesValidator {
   @IsEnum(FileDriver)
+  @IsOptional()
   FILE_DRIVER: FileDriver;
 
   @ValidateIf((envValues) =>
